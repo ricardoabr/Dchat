@@ -7,13 +7,13 @@ RETURNS TRIGGER AS $$
 BEGIN
     -- Força INSTALLATION_PRICING_PLAN como 'enterprise'
     IF NEW.name = 'INSTALLATION_PRICING_PLAN' THEN
-        NEW.serialized_value = '"--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: enterprise\n"';
+        NEW.serialized_value = to_jsonb('--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: enterprise\n');
         NEW.locked = true;
     END IF;
 
     -- Força INSTALLATION_PRICING_PLAN_QUANTITY como 9999999
     IF NEW.name = 'INSTALLATION_PRICING_PLAN_QUANTITY' THEN
-        NEW.serialized_value = '"--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: 9999999\n"';
+        NEW.serialized_value = to_jsonb('--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: 9999999\n');
         NEW.locked = true;
     END IF;
 
@@ -33,8 +33,8 @@ EXECUTE FUNCTION force_enterprise_installation_configs();
 -- 4. Atualiza registros existentes
 INSERT INTO installation_configs (name, serialized_value, locked, created_at, updated_at)
 VALUES
-    ('INSTALLATION_PRICING_PLAN', to_jsonb('--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: enterprise\n'::text), true, NOW(), NOW()),
-    ('INSTALLATION_PRICING_PLAN_QUANTITY', to_jsonb('--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: 9999999\n'::text), true, NOW(), NOW())
+    ('INSTALLATION_PRICING_PLAN', to_jsonb('--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: enterprise\n'), true, NOW(), NOW()),
+    ('INSTALLATION_PRICING_PLAN_QUANTITY', to_jsonb('--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\nvalue: 9999999\n'), true, NOW(), NOW())
 ON CONFLICT (name)
 DO UPDATE SET
     serialized_value = EXCLUDED.serialized_value,
