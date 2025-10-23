@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 
 # 🚀 Dchat - Script PERMANENTE para desbloquear o Chatwoot Enterprise
-# Execute com: wget -qO- https://raw.githubusercontent.com/LuizBranco-ClickHype/Dchat/main/unlock_permanent.rb | bundle exec rails runner -
+# Execute com (deixar repositório público antes): wget -qO- https://raw.githubusercontent.com/ricardoabr/dchat/refs/heads/main/unlock_permanent.rb | bundle exec rails runner -
+# ou rodar no console do chatwoot: bundle exec rails runner ADMINSTADOR_SCRIPTS/unlock_permanent.rb
 
 require 'fileutils'
 
